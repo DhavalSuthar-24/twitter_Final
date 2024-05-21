@@ -59,7 +59,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   } catch (error: any) {
     if (error instanceof OpenAI.APIError) {
       const { name, status, headers, message } = error;
-      res.status(status).json({ name, status, headers, message });
+      res.status(status ?? 500).json({ name, status: status ?? 500, headers, message });
+
     } else {
       console.error('An unexpected error occurred:', error.message);
       res.status(500).json({ error: 'An unexpected error occurred', message: error.message });
