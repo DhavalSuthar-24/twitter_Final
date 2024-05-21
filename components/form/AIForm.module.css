@@ -1,0 +1,99 @@
+.container {
+    margin-top: 20px;
+    position: relative;
+    z-index: 100;
+    margin-left: 3px; /* Ensure it stays above other elements */
+}
+
+.toggleButton {
+    gap: 2px;
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: background-color 0.3s;
+    z-index: 100;
+}
+
+.toggleButton:hover {
+    background-color: #0056b3;
+}
+
+.aiForm {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+    width: 500px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    top: 60px; /* Adjust this value as needed */
+    right: 20px; /* Adjust this value as needed */
+    transition: opacity 0.5s, transform 0.5s;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.hidden {
+    opacity: 0;
+    transform: translateY(-20px);
+    pointer-events: none;
+}
+
+.inputContainer {
+    display: flex;
+    gap: 10px;
+}
+
+.inputField {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    font-size: 14px;
+}
+
+.askButton {
+    padding: 8px 16px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.askButton:disabled {
+    background-color: #f0b2b2;
+    cursor: not-allowed;
+}
+
+.response {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #333;
+    display: flex;
+    gap: 10px;
+}
+
+.copyButton {
+    margin-top: 8px;
+    padding: 5px 10px;
+    background-color: #ffc107;
+    color: black;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.copyButton:hover {
+    background-color: #e0a800;
+}
