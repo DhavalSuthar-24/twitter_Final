@@ -1,12 +1,23 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import ConfirmDeleteModal from '@/components/modals/ConfirmDeleteModal';// Adjust the path as necessary
+import ConfirmDeleteModal from '@/components/modals/ConfirmDeleteModal'; // Adjust the path as necessary
 import Image from 'next/image';
-const UserList = () => {
-  const [users, setUsers] = useState([]);
+
+interface User {
+  id: number;
+  profileImage: string;
+  username: string;
+  name: string;
+  email: string;
+  isAdmin: boolean;
+  // Add more properties if necessary
+}
+
+const UserList: React.FC = () => {
+  const [users, setUsers] = useState<User[]>([]); // Explicitly defining the type as User[]
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null); // Explicitly defining the type as string | null
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [userIdToDelete, setUserIdToDelete] = useState(null);
+  const [userIdToDelete, setUserIdToDelete] = useState<number | null>(null); // Explicitly defining the type as number | null
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
@@ -18,7 +29,7 @@ const UserList = () => {
         }
         const data = await response.json();
         setUsers(data);
-      } catch (error:any) {
+      } catch (error: any) {
         setError(error.message);
       } finally {
         setLoading(false);
@@ -28,7 +39,7 @@ const UserList = () => {
     fetchUsers();
   }, []);
 
-  const openDeleteModal = (userId:any) => {
+  const openDeleteModal = (userId: number) => {
     setUserIdToDelete(userId);
     setIsModalOpen(true);
   };
@@ -39,6 +50,7 @@ const UserList = () => {
   };
 
   const handleDelete = useCallback(async () => {
+    if (userIdToDelete === null) return; // Check if userIdToDelete is null
     setIsDeleting(true);
     try {
       const response = await fetch(`/api/user/${userIdToDelete}`, {
@@ -48,7 +60,7 @@ const UserList = () => {
         throw new Error('Failed to delete user');
       }
       setUsers(users.filter(user => user.id !== userIdToDelete));
-    } catch (error:any) {
+    } catch (error: any) {
       setError(error.message);
     } finally {
       setIsDeleting(false);
@@ -69,7 +81,6 @@ const UserList = () => {
             <th className="px-6 py-3 text-left text-xs font-s text-white uppercase tracking-wider border border-gray-600">Username</th>
             <th className="px-6 py-3 text-left text-xs font-s text-white uppercase tracking-wider border border-gray-600">Name</th>
             <th className="px-6 py-3 text-left text-xs font-s text-white uppercase tracking-wider border border-gray-600">Email</th>
-            {/* <th className="px-6 py-3 text-left text-xs font-s text-white uppercase tracking-wider border border-gray-600">Created At</th> */}
             <th className="px-4 py-3 text-left text-xs font-s text-white uppercase tracking-wider border border-gray-600">Admin</th>
             <th className="px-6 py-3 text-left text-xs font-s text-white uppercase tracking-wider border border-gray-600">Actions</th>
           </tr>
@@ -78,18 +89,17 @@ const UserList = () => {
           {users.map((user) => (
             <tr key={user.id}>
               <td className="px-4 py-4 whitespace-nowrap border border-gray-600">
-              <Image
-    src={user.profileImage || 'https://as2.ftcdn.net/v2/jpg/00/64/67/63/1000_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg'}
-    alt="Profile"
-    width={40}
-    height={40}
-    className="rounded-full"
-/>
+                <Image
+                  src={user.profileImage || 'https://as2.ftcdn.net/v2/jpg/00/64/67/63/1000_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg'}
+                  alt="Profile"
+                  width={40}
+                  height={40}
+                  className="rounded-full"
+                />
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-xs text-white border border-gray-600">{user.username}</td>
               <td className="px-6 py-4 whitespace-nowrap text-xs text-white border border-gray-600">{user.name}</td>
               <td className="px-6 py-4 whitespace-nowrap text-xs text-white border border-gray-600">{user.email}</td>
-              {/* <td className="px-6 py-4 whitespace-nowrap text-xs text-white border border-gray-600">{new Date(user.createdAt).toLocaleDateString()}</td> */}
               <td className="px-4 py-4 whitespace-nowrap text-xs text-center text-white border border-gray-600">{user.isAdmin ? '✅' : 'No'}</td>
               <td className="px-6 py-4 text-xs whitespace-nowrap border border-gray-600">
                 <button
