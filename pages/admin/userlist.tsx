@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import ConfirmDeleteModal from '@/components/modals/ConfirmDeleteModal';// Adjust the path as necessary
-
+import Image from 'next/image';
 const UserList = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -18,7 +18,7 @@ const UserList = () => {
         }
         const data = await response.json();
         setUsers(data);
-      } catch (error) {
+      } catch (error:any) {
         setError(error.message);
       } finally {
         setLoading(false);
@@ -28,7 +28,7 @@ const UserList = () => {
     fetchUsers();
   }, []);
 
-  const openDeleteModal = (userId) => {
+  const openDeleteModal = (userId:any) => {
     setUserIdToDelete(userId);
     setIsModalOpen(true);
   };
@@ -48,7 +48,7 @@ const UserList = () => {
         throw new Error('Failed to delete user');
       }
       setUsers(users.filter(user => user.id !== userIdToDelete));
-    } catch (error) {
+    } catch (error:any) {
       setError(error.message);
     } finally {
       setIsDeleting(false);
@@ -78,11 +78,13 @@ const UserList = () => {
           {users.map((user) => (
             <tr key={user.id}>
               <td className="px-4 py-4 whitespace-nowrap border border-gray-600">
-                <img
-                  src={user.profileImage || 'https://as2.ftcdn.net/v2/jpg/00/64/67/63/1000_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg'}
-                  alt="Profile"
-                  className="h-10 w-10 rounded-full"
-                />
+              <Image
+    src={user.profileImage || 'https://as2.ftcdn.net/v2/jpg/00/64/67/63/1000_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg'}
+    alt="Profile"
+    width={40}
+    height={40}
+    className="rounded-full"
+/>
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-xs text-white border border-gray-600">{user.username}</td>
               <td className="px-6 py-4 whitespace-nowrap text-xs text-white border border-gray-600">{user.name}</td>
