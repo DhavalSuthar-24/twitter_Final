@@ -33,7 +33,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     position: absolute;
     top: 60px; /* Adjust this value as needed */
-    right: 20px; /* Adjust this value as needed */
+    right: 43px; /* Adjust this value as needed */
     transition: opacity 0.5s, transform 0.5s;
     opacity: 1;
     transform: translateY(0);

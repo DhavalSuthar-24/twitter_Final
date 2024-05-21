@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/router';
 import ConfirmDeleteModal from '@/components/modals/ConfirmDeleteModal'; // Adjust the path as necessary
 import Image from 'next/image';
+import useCurrentUser from '@/hooks/useCurrentUser';
 
 interface User {
   id: number;
@@ -13,12 +15,21 @@ interface User {
 }
 
 const UserList: React.FC = () => {
-  const [users, setUsers] = useState<User[]>([]); // Explicitly defining the type as User[]
+  const { data: currentUser, isLoading: isCurrentUserLoading } = useCurrentUser();
+  const router = useRouter();
+
+  const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null); // Explicitly defining the type as string | null
+  const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [userIdToDelete, setUserIdToDelete] = useState<number | null>(null); // Explicitly defining the type as number | null
+  const [userIdToDelete, setUserIdToDelete] = useState<number | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    if (!isCurrentUserLoading && !currentUser) {
+      router.push('/');
+    }
+  }, [isCurrentUserLoading, currentUser, router]);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -50,7 +61,7 @@ const UserList: React.FC = () => {
   };
 
   const handleDelete = useCallback(async () => {
-    if (userIdToDelete === null) return; // Check if userIdToDelete is null
+    if (userIdToDelete === null) return;
     setIsDeleting(true);
     try {
       const response = await fetch(`/api/user/${userIdToDelete}`, {
@@ -70,6 +81,7 @@ const UserList: React.FC = () => {
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
+  if (!currentUser) return null; // Return null if there is no current user
 
   return (
     <div className="overflow-x-auto">
@@ -94,7 +106,7 @@ const UserList: React.FC = () => {
                   alt="Profile"
                   width={40}
                   height={40}
-                  className="rounded-full"
+                  className="rounded-full object-cover max-h-[40px]"
                 />
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-xs text-white border border-gray-600">{user.username}</td>

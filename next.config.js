@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+const nextConfig = {   images: {
+  domains: ['as2.ftcdn.net'],
+},
+
   reactStrictMode: true,
 }
 
